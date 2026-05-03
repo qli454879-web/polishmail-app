@@ -17,6 +17,7 @@ const PORT = Number(process.env.PORT || 8787);
 const APP_BASE_URL = process.env.APP_BASE_URL || "";
 const COOKIE_SECRET = process.env.APP_COOKIE_SECRET || "local-dev-secret";
 const FREE_TRIAL_PER_DAY = Number(process.env.FREE_TRIAL_PER_DAY || 5);
+const SITE_MODE = process.env.SITE_MODE || "test";
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
 const OPENAI_BASE_URL = process.env.OPENAI_BASE_URL || "https://api.openai.com/v1";
 const OPENAI_MODEL = process.env.OPENAI_MODEL || "gpt-4.1-mini";
@@ -238,6 +239,9 @@ function getPlanDisplay(plan) {
 function getStatusPayload(req) {
   const access = getAccess(req);
   const trialRemaining = getTrialRemaining(req);
+  const checkoutEnabled =
+    SITE_MODE === "live" &&
+    Boolean(stripe && Object.values(priceConfig).some(Boolean));
   return {
     access: access
       ? {
@@ -248,6 +252,8 @@ function getStatusPayload(req) {
         }
       : null,
     trialRemaining,
+    siteMode: SITE_MODE,
+    checkoutEnabled,
     stripeConfigured: Boolean(
       stripe && Object.values(priceConfig).some(Boolean)
     ),
@@ -592,7 +598,10 @@ app.post("/api/generate", async (req, res) => {
     if (!allowed) {
       return res.status(402).json({
         error: "trial_exhausted",
-        message: "免费次数已用完，请升级套餐后继续使用。",
+        message:
+          SITE_MODE === "test"
+            ? "当前是测试版，今日免费次数已用完。你可以明天再试，或等待正式开放。"
+            : "免费次数已用完，请升级套餐后继续使用。",
         ...getStatusPayload(req)
       });
     }
@@ -619,6 +628,13 @@ app.post("/api/generate", async (req, res) => {
 
 app.post("/api/create-checkout-session", async (req, res) => {
   try {
+    if (SITE_MODE !== "live") {
+      return res.status(403).json({
+        error: "checkout_disabled",
+        message: "当前站点为测试版，真实支付暂未开放。"
+      });
+    }
+
     const { plan, email } = req.body || {};
     if (!stripe) {
       return res.status(400).json({
@@ -716,6 +732,7 @@ app.get("/health", (_req, res) => {
   res.json({
     ok: true,
     app: "PolishMail",
+    siteMode: SITE_MODE,
     stripeConfigured: Boolean(stripe),
     aiConfigured: Boolean(OPENAI_API_KEY)
   });

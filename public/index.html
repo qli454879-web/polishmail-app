@@ -28,14 +28,14 @@
     <main class="container">
       <section class="hero card">
         <div class="hero-main">
-          <div class="tag">真实可部署版本 · 支持试用限制 · 可接 Stripe 收费</div>
-          <h1>让用户真正愿意付费的，不是 AI 本身，而是更快发出去</h1>
+          <div class="tag">公开测试版 · 支持免费试用 · 暂不开放真实支付</div>
+          <h1>先把产品跑起来，先拿真实反馈，再决定何时正式收费</h1>
           <p class="hero-desc">
             PolishMail 解决的是高压力正式沟通：给教授发日语邮件、给 HR 回英语邮件、给老板发中文解释和跟进。它先给场景，再给语气，再给可直接发送的结果。
           </p>
           <div class="hero-actions">
             <a class="btn primary" href="#generator">立即试用</a>
-            <a class="btn" href="#pricing">查看套餐</a>
+            <a class="btn" href="#pricing">查看测试版说明</a>
             <a class="btn" href="./japan.html">看日本留学生版</a>
           </div>
           <div class="hero-stats">
@@ -48,8 +48,8 @@
               <span>默认每天可免费生成 5 次</span>
             </div>
             <div class="stat">
-              <strong>可接收款</strong>
-              <span>Stripe Checkout 成功后自动解锁</span>
+              <strong>测试版模式</strong>
+              <span>当前先验证产品需求，真实支付暂未开启</span>
             </div>
           </div>
         </div>
@@ -59,8 +59,8 @@
             <p>日本留学生 + 教授 / 就活邮件，是最容易产生真实付费的市场。</p>
           </div>
           <div class="info-card">
-            <strong>为什么有人会付费</strong>
-            <p>因为他们不是买“生成能力”，而是买少想 3 分钟、少出一次错、少紧张一次。</p>
+            <strong>测试版先看什么</strong>
+            <p>先看用户会不会反复使用、会不会收藏、会不会真的把生成结果发出去，再决定后续收费节奏。</p>
           </div>
           <div class="status-card">
             <div class="status-row">
@@ -85,7 +85,7 @@
             <h2>正式邮件 / 正式回复生成器</h2>
             <p>先选语言和场景，再生成 3 个可直接发送的版本。</p>
           </div>
-          <div class="badge">免费试用后可升级</div>
+          <div class="badge">当前为测试版</div>
         </div>
 
         <div class="generator-grid">
@@ -160,64 +160,64 @@
       <section class="pricing-section card" id="pricing">
         <div class="section-head">
           <div>
-            <h2>现在就能卖的套餐结构</h2>
-            <p>先验证低门槛转化，不要一开始做太重的会员体系。</p>
+            <h2 id="pricingTitle">当前测试版开放方式</h2>
+            <p id="pricingDesc">先免费试用和验证需求，正式收费入口暂不开放。</p>
           </div>
         </div>
         <div class="pricing-grid">
           <article class="price-card">
-            <div class="price-badge">免费试用</div>
-            <h3>Free</h3>
+            <div class="price-badge">现在可用</div>
+            <h3>Free 测试版</h3>
             <div class="price">¥0<span>/月</span></div>
             <ul>
               <li>每天 5 次生成</li>
               <li>支持中 / 日 / 英基础场景</li>
-              <li>适合第一次体验</li>
+              <li>适合先体验和提交反馈</li>
             </ul>
           </article>
 
           <article class="price-card featured">
-            <div class="price-badge">主推</div>
+            <div class="price-badge">暂未开放</div>
             <h3>Pro 月卡</h3>
             <div class="price">¥19.9<span>/月</span></div>
             <ul>
               <li>不限次数生成</li>
               <li>三种语言全开放</li>
-              <li>适合长期使用</li>
+              <li>正式收费恢复后再开放</li>
             </ul>
             <div class="buy-box">
-              <input id="emailPro" type="email" placeholder="你的邮箱，用于收据和支付" />
-              <button class="btn primary buy-btn" data-plan="pro_month" data-email-input="emailPro">开通 Pro 月卡</button>
+              <div class="notice">当前站点为测试版，真实支付已关闭。你可以先免费试用生成器，后续再恢复正式收费。</div>
+              <button class="btn buy-btn" data-plan="pro_month" data-mode="test">当前未开放购买</button>
             </div>
           </article>
 
           <article class="price-card">
-            <div class="price-badge">短期需求</div>
+            <div class="price-badge">预留档位</div>
             <h3>周卡</h3>
             <div class="price">¥9.9<span>/周</span></div>
             <ul>
               <li>适合求职 / 论文 / 临时高频场景</li>
               <li>所有语言开放</li>
-              <li>最快测试付款意愿</li>
+              <li>后续如需恢复收费可快速开启</li>
             </ul>
             <div class="buy-box">
-              <input id="emailWeek" type="email" placeholder="你的邮箱，用于收据和支付" />
-              <button class="btn primary buy-btn" data-plan="pro_week" data-email-input="emailWeek">购买周卡</button>
+              <div class="notice">当前先观察使用频率和留存，再决定是否恢复这一档。</div>
+              <button class="btn buy-btn" data-plan="pro_week" data-mode="test">当前未开放购买</button>
             </div>
           </article>
 
           <article class="price-card">
-            <div class="price-badge">场景包</div>
+            <div class="price-badge">优先观察</div>
             <h3>日语邮件包</h3>
             <div class="price">¥9.9<span>/包</span></div>
             <ul>
               <li>教授沟通 + 就活邮件</li>
               <li>适合在日留学生</li>
-              <li>很适合单点成交</li>
+              <li>先看这类场景的真实使用反馈</li>
             </ul>
             <div class="buy-box">
-              <input id="emailJpPack" type="email" placeholder="你的邮箱，用于收据和支付" />
-              <button class="btn primary buy-btn" data-plan="jp_pack" data-email-input="emailJpPack">购买日语包</button>
+              <div class="notice">这类场景仍然保留为后续收费候选，但测试版阶段不做真实成交。</div>
+              <button class="btn buy-btn" data-plan="jp_pack" data-mode="test">当前未开放购买</button>
             </div>
           </article>
         </div>
@@ -241,7 +241,7 @@
           </div>
           <div class="faq-item">
             <strong>现在能真的收款吗？</strong>
-            <p>只要你填入 Stripe 密钥和 Price ID，这个版本就可以直接跳转 Checkout 并在支付成功后解锁权限。</p>
+            <p>当前站点已切换为测试版，真实支付入口暂时关闭，先用于产品验证和真实使用反馈收集。</p>
           </div>
         </div>
       </section>

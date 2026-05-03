@@ -86,6 +86,8 @@ const clearHistoryBtn = document.getElementById("clearHistoryBtn");
 const planStatusEl = document.getElementById("planStatus");
 const trialStatusEl = document.getElementById("trialStatus");
 const stripeStatusEl = document.getElementById("stripeStatus");
+const pricingTitleEl = document.getElementById("pricingTitle");
+const pricingDescEl = document.getElementById("pricingDesc");
 
 const storageKeys = {
   favorites: "polishmail_favorites",
@@ -254,14 +256,22 @@ async function refreshStatus() {
   const response = await fetch("/api/status");
   const data = await response.json();
 
-  if (data.access) {
+  if (data.siteMode === "test") {
+    setStatusText(planStatusEl, "测试版", "warn");
+  } else if (data.access) {
     setStatusText(planStatusEl, data.access.title, "ok");
   } else {
     setStatusText(planStatusEl, "免费试用中", "warn");
   }
 
   setStatusText(trialStatusEl, String(data.trialRemaining), data.trialRemaining > 0 ? "ok" : "danger");
-  setStatusText(stripeStatusEl, data.stripeConfigured ? "已配置" : "未配置", data.stripeConfigured ? "ok" : "warn");
+  if (data.siteMode === "test") {
+    setStatusText(stripeStatusEl, "测试版已关闭", "warn");
+    if (pricingTitleEl) pricingTitleEl.textContent = "当前测试版开放方式";
+    if (pricingDescEl) pricingDescEl.textContent = "先免费试用和验证需求，正式收费入口暂不开放。";
+  } else {
+    setStatusText(stripeStatusEl, data.checkoutEnabled ? "已开放" : "未开放", data.checkoutEnabled ? "ok" : "warn");
+  }
 }
 
 async function generate() {
@@ -342,9 +352,22 @@ function bindCheckoutButtons() {
   document.querySelectorAll(".buy-btn").forEach((button) => {
     button.addEventListener("click", async () => {
       const plan = button.dataset.plan;
+      const original = button.textContent;
+      const mode = button.dataset.mode || "checkout";
+
+      if (mode === "test") {
+        const planMap = {
+          pro_month: "Pro 月卡",
+          pro_week: "周卡",
+          jp_pack: "日语邮件包"
+        };
+        renderMessage(`当前是测试版，${planMap[plan] || "该套餐"}暂未开放购买。你可以先免费试用生成器，后续再恢复正式收费。`, "success");
+        document.getElementById("generator")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        return;
+      }
+
       const emailInputId = button.dataset.emailInput;
       const email = document.getElementById(emailInputId)?.value?.trim() || "";
-      const original = button.textContent;
       button.disabled = true;
       button.textContent = "跳转支付中...";
       try {
