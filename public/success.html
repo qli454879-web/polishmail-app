@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PolishMail - 支付成功</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="page">
+    <main class="container" style="max-width:780px;">
+      <section class="card" style="padding:32px;">
+        <div class="tag">支付成功</div>
+        <h1 style="margin-top:16px;">正在为你开通权限</h1>
+        <p class="hero-desc" id="statusText">请稍等，我们正在确认 Stripe 支付结果并写入你的访问权限。</p>
+        <div id="messageBox" class="inline-message success" style="margin-top:18px;">处理中...</div>
+        <div class="hero-actions" style="margin-top:20px;">
+          <a class="btn primary" href="/">返回产品首页</a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    async function activate() {
+      const params = new URLSearchParams(window.location.search);
+      const sessionId = params.get("session_id");
+      const statusText = document.getElementById("statusText");
+      const messageBox = document.getElementById("messageBox");
+
+      if (!sessionId) {
+        statusText.textContent = "缺少支付会话编号。";
+        messageBox.className = "inline-message error";
+        messageBox.textContent = "没有检测到 session_id，请返回首页重新发起支付。";
+        return;
+      }
+
+      try {
+        const response = await fetch("/api/activate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ sessionId })
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || "开通失败");
+        statusText.textContent = "权限已经开通完成。";
+        messageBox.className = "inline-message success";
+        messageBox.textContent = `已开通：${data.access.title}。现在返回首页就可以继续使用。`;
+      } catch (error) {
+        statusText.textContent = "支付已完成，但自动开通失败。";
+        messageBox.className = "inline-message error";
+        messageBox.textContent = error.message;
+      }
+    }
+
+    activate();
+  </script>
+</body>
+</html>

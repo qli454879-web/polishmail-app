@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PolishMail - 多语言正式沟通助手</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">P</div>
+        <div>
+          <strong>PolishMail</strong>
+          <span>多语言正式沟通助手</span>
+        </div>
+      </div>
+      <nav class="topnav">
+        <a href="#generator">生成器</a>
+        <a href="#pricing">定价</a>
+        <a href="./japan.html">日本版</a>
+        <a href="./business.html">商家信息</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+    </header>
+
+    <main class="container">
+      <section class="hero card">
+        <div class="hero-main">
+          <div class="tag">真实可部署版本 · 支持试用限制 · 可接 Stripe 收费</div>
+          <h1>让用户真正愿意付费的，不是 AI 本身，而是更快发出去</h1>
+          <p class="hero-desc">
+            PolishMail 解决的是高压力正式沟通：给教授发日语邮件、给 HR 回英语邮件、给老板发中文解释和跟进。它先给场景，再给语气，再给可直接发送的结果。
+          </p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#generator">立即试用</a>
+            <a class="btn" href="#pricing">查看套餐</a>
+            <a class="btn" href="./japan.html">看日本留学生版</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat">
+              <strong>3 种语言</strong>
+              <span>中文、日语、英语</span>
+            </div>
+            <div class="stat">
+              <strong>5 次试用</strong>
+              <span>默认每天可免费生成 5 次</span>
+            </div>
+            <div class="stat">
+              <strong>可接收款</strong>
+              <span>Stripe Checkout 成功后自动解锁</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-side">
+          <div class="info-card">
+            <strong>最值得先切的方向</strong>
+            <p>日本留学生 + 教授 / 就活邮件，是最容易产生真实付费的市场。</p>
+          </div>
+          <div class="info-card">
+            <strong>为什么有人会付费</strong>
+            <p>因为他们不是买“生成能力”，而是买少想 3 分钟、少出一次错、少紧张一次。</p>
+          </div>
+          <div class="status-card">
+            <div class="status-row">
+              <span>当前状态</span>
+              <strong id="planStatus">加载中...</strong>
+            </div>
+            <div class="status-row">
+              <span>今日免费次数剩余</span>
+              <strong id="trialStatus">-</strong>
+            </div>
+            <div class="status-row">
+              <span>支付环境</span>
+              <strong id="stripeStatus">检测中...</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="generator-section card" id="generator">
+        <div class="section-head">
+          <div>
+            <h2>正式邮件 / 正式回复生成器</h2>
+            <p>先选语言和场景，再生成 3 个可直接发送的版本。</p>
+          </div>
+          <div class="badge">免费试用后可升级</div>
+        </div>
+
+        <div class="generator-grid">
+          <div class="form-panel">
+            <div class="field-grid">
+              <div class="field">
+                <label for="language">语言</label>
+                <select id="language"></select>
+              </div>
+              <div class="field">
+                <label for="scenario">场景</label>
+                <select id="scenario"></select>
+              </div>
+            </div>
+
+            <div class="field-grid">
+              <div class="field">
+                <label for="recipient">对象</label>
+                <select id="recipient"></select>
+              </div>
+              <div class="field">
+                <label for="urgency">紧急程度</label>
+                <select id="urgency">
+                  <option value="normal">普通</option>
+                  <option value="today">今天内</option>
+                  <option value="urgent">紧急</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="goal">你最想达成的结果</label>
+              <input id="goal" placeholder="比如：申请延期两天 / 请求重新安排面试 / 催一下进度" />
+            </div>
+
+            <div class="field">
+              <label for="details">补充背景</label>
+              <textarea id="details" placeholder="比如：体调不良、课程冲突、已延迟 3 天、我希望保持礼貌但不要太软"></textarea>
+            </div>
+
+            <div class="action-row">
+              <button class="btn primary" id="generateBtn">生成 3 个版本</button>
+              <button class="btn" id="sampleBtn">填入示例</button>
+            </div>
+          </div>
+
+          <div class="result-panel">
+            <div id="resultArea" class="empty-box">
+              先点击“生成 3 个版本”，这里会显示正式结果。
+            </div>
+          </div>
+        </div>
+
+        <div class="memory-grid">
+          <div class="memory-panel">
+            <div class="memory-head">
+              <h3>我的收藏</h3>
+              <button class="btn small-btn" id="clearFavoritesBtn">清空收藏</button>
+            </div>
+            <div id="favoritesArea" class="empty-box small-empty">还没有收藏内容。</div>
+          </div>
+          <div class="memory-panel">
+            <div class="memory-head">
+              <h3>最近生成</h3>
+              <button class="btn small-btn" id="clearHistoryBtn">清空历史</button>
+            </div>
+            <div id="historyArea" class="empty-box small-empty">还没有生成记录。</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="pricing-section card" id="pricing">
+        <div class="section-head">
+          <div>
+            <h2>现在就能卖的套餐结构</h2>
+            <p>先验证低门槛转化，不要一开始做太重的会员体系。</p>
+          </div>
+        </div>
+        <div class="pricing-grid">
+          <article class="price-card">
+            <div class="price-badge">免费试用</div>
+            <h3>Free</h3>
+            <div class="price">¥0<span>/月</span></div>
+            <ul>
+              <li>每天 5 次生成</li>
+              <li>支持中 / 日 / 英基础场景</li>
+              <li>适合第一次体验</li>
+            </ul>
+          </article>
+
+          <article class="price-card featured">
+            <div class="price-badge">主推</div>
+            <h3>Pro 月卡</h3>
+            <div class="price">¥19.9<span>/月</span></div>
+            <ul>
+              <li>不限次数生成</li>
+              <li>三种语言全开放</li>
+              <li>适合长期使用</li>
+            </ul>
+            <div class="buy-box">
+              <input id="emailPro" type="email" placeholder="你的邮箱，用于收据和支付" />
+              <button class="btn primary buy-btn" data-plan="pro_month" data-email-input="emailPro">开通 Pro 月卡</button>
+            </div>
+          </article>
+
+          <article class="price-card">
+            <div class="price-badge">短期需求</div>
+            <h3>周卡</h3>
+            <div class="price">¥9.9<span>/周</span></div>
+            <ul>
+              <li>适合求职 / 论文 / 临时高频场景</li>
+              <li>所有语言开放</li>
+              <li>最快测试付款意愿</li>
+            </ul>
+            <div class="buy-box">
+              <input id="emailWeek" type="email" placeholder="你的邮箱，用于收据和支付" />
+              <button class="btn primary buy-btn" data-plan="pro_week" data-email-input="emailWeek">购买周卡</button>
+            </div>
+          </article>
+
+          <article class="price-card">
+            <div class="price-badge">场景包</div>
+            <h3>日语邮件包</h3>
+            <div class="price">¥9.9<span>/包</span></div>
+            <ul>
+              <li>教授沟通 + 就活邮件</li>
+              <li>适合在日留学生</li>
+              <li>很适合单点成交</li>
+            </ul>
+            <div class="buy-box">
+              <input id="emailJpPack" type="email" placeholder="你的邮箱，用于收据和支付" />
+              <button class="btn primary buy-btn" data-plan="jp_pack" data-email-input="emailJpPack">购买日语包</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="faq-section card" id="faq">
+        <div class="section-head">
+          <div>
+            <h2>FAQ</h2>
+            <p>这几个问题会直接影响你能不能真的收钱。</p>
+          </div>
+        </div>
+        <div class="faq-grid">
+          <div class="faq-item">
+            <strong>为什么不是直接接 ChatGPT 网页？</strong>
+            <p>因为收费点在“更短路径 + 更稳语气 + 更像真实邮件”，而不是模型本身。</p>
+          </div>
+          <div class="faq-item">
+            <strong>为什么先做日本市场？</strong>
+            <p>因为日本留学生给教授和公司发邮件的痛点真实、频繁，而且出错成本更高。</p>
+          </div>
+          <div class="faq-item">
+            <strong>现在能真的收款吗？</strong>
+            <p>只要你填入 Stripe 密钥和 Price ID，这个版本就可以直接跳转 Checkout 并在支付成功后解锁权限。</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="./app.js" type="module"></script>
+</body>
+</html>
